@@ -1,0 +1,89 @@
+{
+  "author": "Jan Specian",
+  "license": "ISC",
+  "name": "testovic",
+  "version": "1.0.0",
+  "description": "Testo TEstovic",
+  "main": "index.tsx",
+  "scripts": {
+    "build": "npx webpack",
+    "test": "npx jest",
+    "tw": "npx jest --watchAll",
+    "start": "npm run open",
+    "open": "concurrently \"http-server -a localhost -p 1234\" \"open http://localhost:1234/build\""
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.35",
+    "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@progress/kendo-data-query": "^1.5.5",
+    "@progress/kendo-drawing": "^1.15.0",
+    "@progress/kendo-licensing": "^1.2.0",
+    "@progress/kendo-react-buttons": "^4.5.0",
+    "@progress/kendo-react-data-tools": "^4.8.0",
+    "@progress/kendo-react-dateinputs": "^4.9.0",
+    "@progress/kendo-react-dialogs": "^4.9.0",
+    "@progress/kendo-react-dropdowns": "^4.9.0",
+    "@progress/kendo-react-grid": "^4.9.0",
+    "@progress/kendo-react-inputs": "^4.9.0",
+    "@progress/kendo-react-intl": "^4.4.0",
+    "@progress/kendo-react-layout": "^4.9.0",
+    "@progress/kendo-react-progressbars": "^4.4.0",
+    "@progress/kendo-react-treeview": "^4.9.0",
+    "@progress/kendo-theme-default": "^4.41.2",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "mobx": "^6.3.0",
+    "mobx-react": "^7.1.0",
+    "mobx-react-router": "^4.1.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "react-router-prop-types": "^1.0.5",
+    "reflect-metadata": "^0.1.13",
+    "typedi": "^0.10.0"
+  },
+  "devDependencies": {
+    "@jest/types": "^27.1.0",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^12.20.12",
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router": "^5.1.14",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "babel-loader": "^8.2.2",
+    "concurrently": "^6.3.0",
+    "css-loader": "^5.2.4",
+    "eslint": "^7.24.0",
+    "eslint-webpack-plugin": "^2.5.4",
+    "http-server": "^14.0.0",
+    "jest": "^27.0.4",
+    "jest-css-modules-transform": "^4.3.0",
+    "source-map-loader": "^2.0.1",
+    "style-loader": "^2.0.0",
+    "ts-jest": "^27.0.2",
+    "ts-loader": "^9.1.0",
+    "ts-node": "^10.2.1",
+    "typescript": "^4.1.5",
+    "webpack": "^5.52.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JSpeci/Testovic.git"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version",
+      "last 1 ie version"
+    ]
+  }
+}
