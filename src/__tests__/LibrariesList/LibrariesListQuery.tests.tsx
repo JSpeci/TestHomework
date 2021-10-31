@@ -3,13 +3,27 @@ import { RootStore } from "../../StoreRegistrator";
 import { render } from "../../test-utils";
 import React from "react";
 import { MonitoringLibrariesList } from "../../App/Monitoring/MonitoringLibrariesList";
-import { screen } from "@testing-library/dom";
+import { screen, within } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
+
+const renderMonitoringList = () => {
+  return (
+    <MonitoringLibrariesList
+      MonitoringLibrariesListModel={
+        RootStore.stores.MonitoringStore.MonitoringLibrariesListModel
+      }
+      MonitoringLibrariesQueryHandler={
+        RootStore.MonitoringQueryHandlers.MonitoringLibrariesQueryHandler
+      }
+      NewMonitoringLibraryDialogModel={
+        RootStore.dialogsStore.NewMonitoringLibraryDialogModel
+      }
+    />
+  );
+};
 
 describe("Libraries list", () => {
   it("loads List", async () => {
-    const monitoringQueries = new MonitoringFetches.Queries();
-
     await RootStore.MonitoringQueryHandlers.MonitoringLibrariesQueryHandler.getMonitoringLibraries();
     expect(
       RootStore.stores.MonitoringStore.MonitoringLibrariesListModel.Libraries
@@ -41,19 +55,7 @@ Array [
   });
 
   it("loads list to Table", async () => {
-    render(
-      <MonitoringLibrariesList
-        MonitoringLibrariesListModel={
-          RootStore.stores.MonitoringStore.MonitoringLibrariesListModel
-        }
-        MonitoringLibrariesQueryHandler={
-          RootStore.MonitoringQueryHandlers.MonitoringLibrariesQueryHandler
-        }
-        NewMonitoringLibraryDialogModel={
-          RootStore.dialogsStore.NewMonitoringLibraryDialogModel
-        }
-      />
-    );
+    render(renderMonitoringList());
     expect(screen.getAllByRole("row")).toMatchInlineSnapshot(`
 Array [
   <tr
@@ -246,19 +248,7 @@ Array [
   });
 
   it("clicking new monitoring library opens the dialog", async () => {
-    render(
-      <MonitoringLibrariesList
-        MonitoringLibrariesListModel={
-          RootStore.stores.MonitoringStore.MonitoringLibrariesListModel
-        }
-        MonitoringLibrariesQueryHandler={
-          RootStore.MonitoringQueryHandlers.MonitoringLibrariesQueryHandler
-        }
-        NewMonitoringLibraryDialogModel={
-          RootStore.dialogsStore.NewMonitoringLibraryDialogModel
-        }
-      />
-    );
+    render(renderMonitoringList());
 
     userEvent.click(
       screen.getByRole("button", { name: /New monitoring library/i })
@@ -272,7 +262,17 @@ Array [
 
     userEvent.click(screen.getByRole("button", { name: /Create/i }));
 
-    screen.findByRole("gridcell", { name: libName });
+    await screen.findByRole("gridcell", { name: libName });
+  });
+
+  it("table exists and has columns Name, CountOfPools, Questions", async () => {
+    render(renderMonitoringList());
+
+    const table = screen.getByRole("grid");
+    expect(table).toBeDefined();
+    within(table).getByRole("columnheader", { name: /Name/i });
+    within(table).getByRole("columnheader", { name: /CountOfPools/i });
+    within(table).getByRole("columnheader", { name: /# Questions/i });
   });
 });
 
