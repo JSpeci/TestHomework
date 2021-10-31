@@ -4,6 +4,7 @@ import { render } from "../../test-utils";
 import React from "react";
 import { MonitoringLibrariesList } from "../../App/Monitoring/MonitoringLibrariesList";
 import { screen } from "@testing-library/dom";
+import userEvent from "@testing-library/user-event";
 
 describe("Libraries list", () => {
   it("loads List", async () => {
@@ -242,6 +243,36 @@ Array [
   </tr>,
 ]
 `);
+  });
+
+  it("clicking new monitoring library opens the dialog", async () => {
+    render(
+      <MonitoringLibrariesList
+        MonitoringLibrariesListModel={
+          RootStore.stores.MonitoringStore.MonitoringLibrariesListModel
+        }
+        MonitoringLibrariesQueryHandler={
+          RootStore.MonitoringQueryHandlers.MonitoringLibrariesQueryHandler
+        }
+        NewMonitoringLibraryDialogModel={
+          RootStore.dialogsStore.NewMonitoringLibraryDialogModel
+        }
+      />
+    );
+
+    userEvent.click(
+      screen.getByRole("button", { name: /New monitoring library/i })
+    );
+
+    const libName = "TestLibrary123";
+
+    await screen.findByRole("dialog", { name: /New Monitoring Library/i });
+
+    userEvent.type(screen.getByLabelText(/library name/i), libName);
+
+    userEvent.click(screen.getByRole("button", { name: /Create/i }));
+
+    screen.findByRole("gridcell", { name: libName });
   });
 });
 

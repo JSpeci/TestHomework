@@ -14,10 +14,12 @@ export class DummyApiService extends IApiServiceBase {
 
         // switch case url
         switch (url) {
-            case ("api/q/adm/mon/q/l/GridRows"):
-                return this.server.GetMonitoringLibraries();
-            case ("api/q/adm/mon/q/GridRows"):
-                return this.server.GetMonitoringQuestions(body);
+          case "api/q/adm/mon/q/l/GridRows":
+            return this.server.GetMonitoringLibraries();
+          case "api/q/adm/mon/q/GridRows":
+            return this.server.GetMonitoringQuestions(body);
+          case "api/c/adm/mon/q/l/Create":
+            return this.server.CreateMonitoringLibrary(body);
         }
 
     }
