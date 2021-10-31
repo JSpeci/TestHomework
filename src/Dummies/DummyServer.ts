@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from "mobx";
 import { ResponseStatusEnum } from "../Abstract/Abstract";
-import { CreateCommandResponse } from "../Abstract/Response";
+import { CreateCommandResponse, CommandResponse } from "../Abstract/Response";
 import { MonitoringDtos } from "../Dtos/Monitoring";
 import { MonLibs } from "./MonLibs.statit";
 import { MonQs1, MonQs2 } from "./MonQuestions.static";
@@ -20,6 +20,7 @@ export class DummyServer {
       questions1: observable,
       questions2: observable,
       CreateMonitoringLibrary: action,
+      RemoveMonitoringLibrary: action,
     });
 
     this.libs = MonLibs;
@@ -83,5 +84,22 @@ export class DummyServer {
       id: lib.libraryID,
       responseStatus: ResponseStatusEnum.OK,
     };
+  }
+
+  public async RemoveMonitoringLibrary({
+    libraryID,
+  }: MonitoringDtos.RemoveLibraryCommand): Promise<CommandResponse> {
+    const lib = this.libs.find((lib) => lib.libraryID === libraryID);
+    if (lib) {
+      this.libs.splice(this.libs.indexOf(lib), 1);
+      return {
+        responseStatus: ResponseStatusEnum.OK,
+      };
+    } else {
+      return {
+        responseStatus: ResponseStatusEnum.ValidationError,
+        errorCode: "LibraryNotFound",
+      };
+    }
   }
 }

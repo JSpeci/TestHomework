@@ -1,4 +1,3 @@
-import { MonitoringFetches } from "../../Fetches/MonitoringFetches";
 import { RootStore } from "../../StoreRegistrator";
 import { render } from "../../test-utils";
 import React from "react";

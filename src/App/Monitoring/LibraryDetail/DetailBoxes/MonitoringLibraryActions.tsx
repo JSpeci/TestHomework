@@ -7,74 +7,107 @@ import { ResponseStatusEnum } from "../../../../Abstract/Abstract";
 import { ADetailModel } from "../../../../Abstract/ADetailModel";
 import { CommandResponse } from "../../../../Abstract/Response";
 import { MonitoringDtos } from "../../../../Dtos/Monitoring";
+import { DialogsStore } from "../../../../Stores/Dialog/DialogsStore";
 import { MonitoringCommandHandler } from "../../../../Stores/Monitoring/MonitoringCommandHandler";
+import { DeleteLibraryDialog } from "../DeleteLibraryDialog";
 
 export class MonitoringLibraryDetailActionsBoxModel extends ADetailModel<MonitoringDtos.LibraryGridRowDTO> {
+  serverError?: string;
 
-    serverError?: string;
+  deleteCommand: MonitoringDtos.RemoveLibraryCommand = {
+    libraryID: "",
+  };
 
-    deleteCommand: MonitoringDtos.RemoveLibraryCommand = {
-        libraryID: "",
-    };
+  constructor() {
+    super();
+    makeObservable(this, {
+      serverError: observable,
+      deleteCommand: observable,
+    });
+  }
 
-
-    constructor() {
-        super();
-        makeObservable(this, {
-            serverError: observable,
-            deleteCommand: observable,
-        });
-    }
-
-    async DeleteLibrary(id: string | undefined, MonitoringCommandHandler?: MonitoringCommandHandler) {
-        if (this.Dto && id) {
-            this.deleteCommand.libraryID = id;
-            return await MonitoringCommandHandler?.monitoringLibraryRemove(this.deleteCommand)
-                .then(i => {
-                    if (i.responseStatus === ResponseStatusEnum.OK) {
-                        this.deleteCommand = {
-                            libraryID: ""
-                        };
-                    }
-                    else {
-                        this.serverError = ResponseStatusEnum[i.responseStatus] + " " + i.errorCode;
-                    }
-                    return i;
-                });
+  async DeleteLibrary(
+    id: string | undefined,
+    MonitoringCommandHandler?: MonitoringCommandHandler
+  ) {
+    if (this.Dto && id) {
+      this.deleteCommand.libraryID = id;
+      return await MonitoringCommandHandler?.monitoringLibraryRemove(
+        this.deleteCommand
+      ).then((i) => {
+        if (i.responseStatus === ResponseStatusEnum.OK) {
+          this.deleteCommand = {
+            libraryID: "",
+          };
+        } else {
+          this.serverError =
+            ResponseStatusEnum[i.responseStatus] + " " + i.errorCode;
         }
+        return i;
+      });
     }
+  }
 }
 
 interface MonitoringLibraryDetailActionsBoxProps {
-    MonitoringCommandHandler?: MonitoringCommandHandler;
-    model: MonitoringLibraryDetailActionsBoxModel;
-    routing?: RouterStore;
+  MonitoringCommandHandler?: MonitoringCommandHandler;
+  model: MonitoringLibraryDetailActionsBoxModel;
+  routing?: RouterStore;
+  dialogsStore?: DialogsStore;
 }
 
-export const MonitoringLibraryDetailActionsBox = inject("MonitoringCommandHandler", "routing")(observer(
+export const MonitoringLibraryDetailActionsBox = inject(
+  "MonitoringCommandHandler",
+  "routing",
+  "dialogsStore"
+)(
+  observer(
     class MonitoringLibraryDetailActionsBox extends React.Component<MonitoringLibraryDetailActionsBoxProps> {
-        render() {
-            const model = this.props.model;
-            return (
-                <React.Fragment>
-                    <div className="client-detail-box">
-                        <Button onClick={() => {
-                            if (model.Dto) {
-                                model.DeleteLibrary(model.Dto?.libraryID, this.props.MonitoringCommandHandler).then((i: CommandResponse | undefined) => {
-                                    if (i) {
-                                        if (i.responseStatus !== ResponseStatusEnum.OK) {
-                                            const em = ResponseStatusEnum[i.responseStatus] + " " + i.errorCode;
-                                        }
-                                        else {
-                                            this.props.routing?.goBack();
-                                        }
-                                    }
-                                });;
+      render() {
+        const model = this.props.model;
+        const dm = this.props.dialogsStore?.DeleteLibraryDialogModel;
+        return (
+          <React.Fragment>
+            <div className="client-detail-box">
+              {dm?.Visible && (
+                <DeleteLibraryDialog
+                  model={dm}
+                  onConfirm={() => {
+                    if (model.Dto) {
+                      model
+                        .DeleteLibrary(
+                          model.Dto?.libraryID,
+                          this.props.MonitoringCommandHandler
+                        )
+                        .then((i: CommandResponse | undefined) => {
+                          if (i) {
+                            if (i.responseStatus !== ResponseStatusEnum.OK) {
+                              const em =
+                                ResponseStatusEnum[i.responseStatus] +
+                                " " +
+                                i.errorCode;
+                            } else {
+                              dm.hide();
+                              this.props.routing?.goBack();
                             }
-                        }}>Delete Library</Button>
-                    </div>
-                </React.Fragment>
-            );
-        }
+                          }
+                        });
+                    }
+                  }}
+                />
+              )}
+              <Button
+                onClick={() => {
+                  dm?.show();
+                }}
+              >
+                Delete Library
+              </Button>
+            </div>
+          </React.Fragment>
+        );
+      }
     }
-));
+  )
+);
+

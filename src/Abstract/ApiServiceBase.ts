@@ -20,6 +20,8 @@ export class DummyApiService extends IApiServiceBase {
             return this.server.GetMonitoringQuestions(body);
           case "api/c/adm/mon/q/l/Create":
             return this.server.CreateMonitoringLibrary(body);
+          case "api/c/adm/mon/q/l/Remove":
+            return this.server.RemoveMonitoringLibrary(body);
         }
 
     }
