@@ -33,19 +33,20 @@ export const MonitoringLibraryGeneralInfoBox = inject("MonitoringCommandHandler"
         render() {
             const model = this.props.model;
             return (
-
-                <React.Fragment>
-                    <div className="flex-container">
-                        <TextBlock
-                            label="Library Name"
-                            // onSave={(e) => { model.NameChanged(e, this.props.MonitoringCommandHandler) }}>
-                            value={model.Dto?.libraryName} />
-                        <TextBlock
-                            label="Library Note"
-                            // onSave={(e) => { model.NoteChanged(e, this.props.MonitoringCommandHandler) }}>
-                            value={model.Dto?.note} />
-                    </div >
-                </React.Fragment >
+              <React.Fragment>
+                <div className="flex-container client-detail-box ">
+                  <TextBlock
+                    label="Library Name"
+                    // onSave={(e) => { model.NameChanged(e, this.props.MonitoringCommandHandler) }}>
+                    value={model.Dto?.libraryName}
+                  />
+                  <TextBlock
+                    label="Library Note"
+                    // onSave={(e) => { model.NoteChanged(e, this.props.MonitoringCommandHandler) }}>
+                    value={model.Dto?.note}
+                  />
+                </div>
+              </React.Fragment>
             );
         }
     }

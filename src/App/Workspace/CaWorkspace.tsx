@@ -17,34 +17,51 @@ export interface CaWorkspaceProps {
     dialogsStore?: DialogsStore;
 }
 
-export const CaWorkspace = inject("stores", "caUiStore", "MonitoringQueryHandlers")
-    (observer(class CaWorkspace extends React.Component<CaWorkspaceProps> {
+export const CaWorkspace = inject(
+  "stores",
+  "caUiStore",
+  "MonitoringQueryHandlers",
+  "dialogsStore"
+)(
+  observer(
+    class CaWorkspace extends React.Component<CaWorkspaceProps> {
+      componentDidMount() {
+        this.props.caUiStore?.setActualPosition(AppRoutes.HomeWorkspace);
+      }
 
-        componentDidMount() {
-            this.props.caUiStore?.setActualPosition(AppRoutes.HomeWorkspace);
-        }
+      render() {
+        const stores = this.props.stores;
+        const uiStore = this.props.caUiStore;
 
-        render() {
-            const stores = this.props.stores;
-            const uiStore = this.props.caUiStore;
-            return (
-                <div className="App">
-                    {
-                        stores && uiStore &&
-                        <div className="company-admin-workspace">
-                            <TabStrip selected={uiStore.selectedTab} onSelect={uiStore.handleSelect}>
-                                <TabStripTab title="Monitoring">
-                                    <MonitoringLibrariesList
-                                        NewMonitoringLibraryDialogModel={this.props.dialogsStore?.NewMonitoringLibraryDialogModel}
-                                        MonitoringLibrariesQueryHandler={this.props.MonitoringQueryHandlers?.MonitoringLibrariesQueryHandler}
-                                        MonitoringLibrariesListModel={stores.MonitoringStore.MonitoringLibrariesListModel} />
-                                </TabStripTab>
-                                <TabStripTab title="Another tabs">
-                                </TabStripTab>
-                            </TabStrip>
-                        </div>
-                    }
-                </div>
-            );
-        }
-    }));
+        return (
+          <div className="App">
+            {stores && uiStore && (
+              <div className="company-admin-workspace">
+                <TabStrip
+                  selected={uiStore.selectedTab}
+                  onSelect={uiStore.handleSelect}
+                >
+                  <TabStripTab title="Monitoring">
+                    <MonitoringLibrariesList
+                      NewMonitoringLibraryDialogModel={
+                        this.props.dialogsStore?.NewMonitoringLibraryDialogModel
+                      }
+                      MonitoringLibrariesQueryHandler={
+                        this.props.MonitoringQueryHandlers
+                          ?.MonitoringLibrariesQueryHandler
+                      }
+                      MonitoringLibrariesListModel={
+                        stores.MonitoringStore.MonitoringLibrariesListModel
+                      }
+                    />
+                  </TabStripTab>
+                  <TabStripTab title="Another tabs"></TabStripTab>
+                </TabStrip>
+              </div>
+            )}
+          </div>
+        );
+      }
+    }
+  )
+);

@@ -10,7 +10,7 @@
     "test": "npx jest",
     "tw": "npx jest --watchAll",
     "start": "npm run open",
-    "open": "concurrently \"http-server -a localhost -p 1234\" \"open http://localhost:1234/build\""
+    "open": "concurrently \"http-server -a localhost -p 1234\" \"open http://localhost:1234/dist\""
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -18,7 +18,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "@progress/kendo-data-query": "^1.5.5",
     "@progress/kendo-drawing": "^1.15.0",
-    "@progress/kendo-licensing": "^1.2.0",
+    "@progress/kendo-licensing": "^1.2.1",
     "@progress/kendo-react-buttons": "^4.5.0",
     "@progress/kendo-react-data-tools": "^4.8.0",
     "@progress/kendo-react-dateinputs": "^4.9.0",
@@ -45,6 +45,8 @@
   },
   "devDependencies": {
     "@jest/types": "^27.1.0",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^12.20.12",
     "@types/react": "^17.0.5",
@@ -58,6 +60,7 @@
     "css-loader": "^5.2.4",
     "eslint": "^7.24.0",
     "eslint-webpack-plugin": "^2.5.4",
+    "html-webpack-plugin": "^5.5.0",
     "http-server": "^14.0.0",
     "jest": "^27.0.4",
     "jest-css-modules-transform": "^4.3.0",
@@ -67,7 +70,8 @@
     "ts-loader": "^9.1.0",
     "ts-node": "^10.2.1",
     "typescript": "^4.1.5",
-    "webpack": "^5.52.0"
+    "webpack": "^5.52.0",
+    "webpack-cli": "^4.9.1"
   },
   "repository": {
     "type": "git",
